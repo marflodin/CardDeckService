@@ -3,6 +3,7 @@ package com.marflo.service.carddeck.endpoint;
 import com.codahale.metrics.annotation.Timed;
 import com.marflo.service.carddeck.api.CardDeckResponse;
 import com.marflo.service.carddeck.entity.Card;
+import com.marflo.service.carddeck.event.KafkaProducer;
 import com.marflo.service.carddeck.logic.DeckHandler;
 import com.marflo.service.carddeck.logic.DeckHandlerImpl;
 
@@ -16,11 +17,14 @@ import java.util.List;
 public class CardDeckService {
 
     private DeckHandler deckHandler = new DeckHandlerImpl();
+    private KafkaProducer kafkaProducer = new KafkaProducer();
 
     @PUT
     @Timed
     public String createDeck() {
-        return deckHandler.createDeck();
+        String deckId = deckHandler.createDeck();
+        kafkaProducer.sendMessageToTopic("createdCardDeck", deckId);
+        return deckId;
     }
 
     @GET
@@ -32,6 +36,8 @@ public class CardDeckService {
         for (int i = 0; i < numberOfCards; i++) {
             cards.add(deckHandler.drawCardForDeck(deckId));
         }
-        return new CardDeckResponse(deckId, cards);
+        CardDeckResponse cardDeckResponse = new CardDeckResponse(deckId, cards);
+        kafkaProducer.sendMessageToTopic("drawnCardFromDeck", cardDeckResponse);
+        return cardDeckResponse;
     }
 }
