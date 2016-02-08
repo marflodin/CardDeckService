@@ -15,7 +15,6 @@ public class CardDeckRunner extends Application<CardDeckConfiguration> {
 
     @Override
     public void initialize(Bootstrap<CardDeckConfiguration> bootstrap) {
-        // nothing to do yet
     }
 
     @Override
