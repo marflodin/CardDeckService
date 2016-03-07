@@ -30,10 +30,4 @@ public class KafkaProducer {
                 new KeyedMessage<String, String>(topic, message);
         producer.send(data);
     }
-
-    public void sendMessageToTopic(String topic, CardDeckResponse cardDeckResponse) {
-        KeyedMessage<String, CardDeckResponse> data =
-                new KeyedMessage<String, CardDeckResponse>(topic, cardDeckResponse);
-        cardDeckResponseProducer.send(data);
-    }
 }
