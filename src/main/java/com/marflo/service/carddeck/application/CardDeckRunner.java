@@ -10,8 +10,8 @@ import io.dropwizard.setup.Environment;
 public class CardDeckRunner extends Application<CardDeckConfiguration> {
 
     public static void main(String[] args) throws Exception {
-        new CardDeckRunner().run(args);
-        //new CardDeckRunner().run("server");
+        //new CardDeckRunner().run(args);
+        new CardDeckRunner().run("server");
     }
 
     @Override
